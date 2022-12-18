@@ -63,10 +63,9 @@ class CustomDataset(DatasetTemplate):
         return np.array(gt_boxes, dtype=np.float32), np.array(gt_names)
 
     def get_lidar(self, idx):
-        lidar_file = self.root_path / 'points' / ('%s.npy' % idx)
+        lidar_file = self.root_path / 'points' / ('%s.bin' % idx)
         assert lidar_file.exists()
-        point_features = np.load(lidar_file)
-        return point_features
+        return np.fromfile(str(lidar_file), dtype=np.float32).reshape(-1, 4)
 
     def set_split(self, split):
         super().__init__(
